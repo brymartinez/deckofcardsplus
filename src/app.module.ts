@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { DeckController } from './deck.controller';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppService } from './app.service';
+import { DeckService } from './services/deck/deck.service';
 
 @Module({
   imports: [
@@ -16,6 +16,6 @@ import { AppService } from './app.service';
     }),
   ],
   controllers: [DeckController],
-  providers: [AppService],
+  providers: [DeckService],
 })
 export class AppModule {}

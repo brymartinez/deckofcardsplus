@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { DeckService } from './services/deck/deck.service';
+import { CreateDeckDTO } from './dto/create-deck.dto';
 
 @Controller({ version: '1', path: 'deck' })
 export class DeckController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly deckService: DeckService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post()
+  createDeck(@Body() dto?: CreateDeckDTO) {
+    Logger.debug(dto);
+    return this.deckService.create(dto?.count);
   }
 }
