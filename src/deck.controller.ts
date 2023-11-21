@@ -8,7 +8,7 @@ export class DeckController {
 
   @Post()
   createDeck(@Body() dto?: CreateDeckDTO) {
-    Logger.debug(dto);
-    return this.deckService.create(dto?.count);
+    Logger.debug({ msg: 'DeckController', dto });
+    return this.deckService.create(dto);
   }
 }
