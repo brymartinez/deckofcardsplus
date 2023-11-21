@@ -16,8 +16,8 @@ describe('DeckService', () => {
         {
           provide: getModelToken('Deck'),
           useValue: {
-            create: jest.fn(),
-            findById: jest.fn(),
+            create: jest.fn().mockResolvedValue(DECK),
+            findById: jest.fn().mockResolvedValue(DECK),
           },
         },
       ],
@@ -32,7 +32,6 @@ describe('DeckService', () => {
   });
   describe('create', () => {
     it('should create cards', () => {
-      jest.spyOn(deckModel, 'create').mockResolvedValue(DECK);
       expect(service.create({ isShuffled: false })).resolves.toStrictEqual(
         DECK,
       );
@@ -45,15 +44,22 @@ describe('DeckService', () => {
       });
     });
     it('should create cards, shuffled', () => {
-      jest.spyOn(deckModel, 'create').mockResolvedValue(DECK);
       expect(service.create({ isShuffled: true })).resolves.toStrictEqual(DECK);
     });
   });
   describe('get', () => {
     it('should get cards', () => {
-      jest.spyOn(deckModel, 'findById').mockResolvedValue(DECK);
-
       expect(service.get('deckId')).resolves.toStrictEqual(DECK);
+    });
+  });
+  describe('draw', () => {
+    it('should draw cards', () => {
+      jest
+        .spyOn(deckModel, 'findById')
+        .mockResolvedValue({ ...DECK, save: jest.fn() });
+      expect(service.draw('deckId', 1)).resolves.toStrictEqual([
+        { code: 'AS', suit: 'SPADES', value: 'ACE' },
+      ]);
     });
   });
 });
