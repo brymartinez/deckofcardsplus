@@ -15,6 +15,9 @@ export class Deck {
   drawPile: string[];
 
   @Prop()
+  isShuffled: boolean;
+
+  @Prop()
   remaining: number;
 }
 
