@@ -2,13 +2,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DeckController } from './deck.controller';
 import { DeckService } from './services/deck/deck.service';
 
-describe('AppController', () => {
+describe('DeckController', () => {
   let deckController: DeckController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [DeckController],
-      providers: [DeckService],
+      providers: [
+        {
+          provide: DeckService,
+          useValue: {
+            create: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     deckController = app.get<DeckController>(DeckController);
@@ -16,7 +23,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(deckController.createDeck()).toBeDefined();
+      expect(deckController.createDeck()).resolves.toStrictEqual(undefined);
     });
   });
 });

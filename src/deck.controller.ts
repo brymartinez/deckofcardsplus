@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Logger, Post, Get, Param } from '@nestjs/common';
 import { DeckService } from './services/deck/deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 
@@ -7,8 +7,13 @@ export class DeckController {
   constructor(private readonly deckService: DeckService) {}
 
   @Post()
-  createDeck(@Body() dto?: CreateDeckDTO) {
+  public async createDeck(@Body() dto?: CreateDeckDTO) {
     Logger.debug({ msg: 'DeckController', dto });
     return this.deckService.create(dto);
+  }
+
+  @Get(':deckId')
+  getDeck(@Param('deckId') deckId: string) {
+    return this.deckService.get(deckId);
   }
 }
