@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { DeckController } from './deck.controller';
 import { ConfigModule } from '@nestjs/config';
-// import { ThrottlerModule } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppService } from './app.service';
 
@@ -16,7 +15,7 @@ import { AppService } from './app.service';
       },
     }),
   ],
-  controllers: [AppController],
+  controllers: [DeckController],
   providers: [AppService],
 })
 export class AppModule {}
