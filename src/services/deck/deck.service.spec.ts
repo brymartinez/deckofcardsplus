@@ -77,6 +77,7 @@ describe('DeckService', () => {
           provide: getModelToken('Deck'),
           useValue: {
             create: jest.fn(),
+            findById: jest.fn(),
           },
         },
       ],
@@ -105,6 +106,13 @@ describe('DeckService', () => {
     it('should create cards, shuffled', () => {
       jest.spyOn(deckModel, 'create').mockResolvedValue(DECK);
       expect(service.create({ isShuffled: true })).resolves.toStrictEqual(DECK);
+    });
+  });
+  describe('get', () => {
+    it('should get cards', () => {
+      jest.spyOn(deckModel, 'findById').mockResolvedValue(DECK);
+
+      expect(service.get('deckId')).resolves.toStrictEqual(DECK);
     });
   });
 });

@@ -53,7 +53,7 @@ export class DeckService {
     return cards;
   }
 
-  private createCards(isShuffled = true): string[] {
+  private createCards(isShuffled: boolean): string[] {
     const result: string[] = [];
     Object.keys(DeckSuit).forEach((suit) => {
       DECK_CARDS.forEach((card) => {
