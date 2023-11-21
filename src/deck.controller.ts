@@ -24,7 +24,15 @@ export class DeckController {
 
   @Get(':deckId')
   @UseInterceptors(DeckInterceptor)
-  getDeck(@Param('deckId') deckId: string) {
+  public async getDeck(@Param('deckId') deckId: string) {
     return this.deckService.get(deckId);
+  }
+
+  @Post(':deckId/draw/:count')
+  public async drawFromDeck(
+    @Param('deckId') deckId: string,
+    @Param('count') count: number,
+  ) {
+    return this.deckService.draw(deckId, count);
   }
 }
