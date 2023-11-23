@@ -14,6 +14,7 @@ import { DeckInterceptor } from './interceptor/deck.interceptor';
 import { CardInterceptor } from './interceptor/card.interceptor';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { CardDTO } from './dto/card.dto';
+import { DeckDTO } from './dto/deck.dto';
 
 @Controller({ version: '1', path: 'deck' })
 export class DeckController {
@@ -28,6 +29,14 @@ export class DeckController {
 
   @Get(':deckId')
   @UseInterceptors(DeckInterceptor)
+  @ApiExtraModels(DeckDTO)
+  @ApiResponse({
+    description: 'Deck details',
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(DeckDTO),
+    },
+  })
   public async getDeck(@Param('deckId') deckId: string) {
     return this.deckService.get(deckId);
   }
@@ -36,7 +45,8 @@ export class DeckController {
   @Post(':deckId/draw/:count')
   @ApiExtraModels(CardDTO)
   @ApiResponse({
-    description: 'Deck details plus cards drawn.',
+    description: 'Deck details plus cards drawn',
+    status: 200,
     schema: {
       $ref: getSchemaPath(CardDTO),
     },
