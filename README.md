@@ -6,6 +6,12 @@
 
 Deck of cards NestJS implementation, inspired by the [Deck of Cards API](https://www.deckofcardsapi.com/).
 
+## TODO
+ - Shuffle
+ - OpenAPI
+ - Partial Deck
+ - Pile Management
+
 ## Installation
 
 ```bash
