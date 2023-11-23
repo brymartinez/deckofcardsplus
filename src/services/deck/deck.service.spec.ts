@@ -54,11 +54,14 @@ describe('DeckService', () => {
   });
   describe('draw', () => {
     it('should draw cards', () => {
-      jest
-        .spyOn(deckModel, 'findById')
-        .mockResolvedValue({ ...DECK, save: jest.fn() });
+      jest.spyOn(deckModel, 'findById').mockResolvedValue({
+        ...DECK,
+        save: jest.fn(),
+        toObject: jest.fn().mockReturnValue(DECK),
+      });
       expect(service.draw('deckId', 1)).resolves.toStrictEqual([
-        { code: 'AS', suit: 'SPADES', value: 'ACE' },
+        [{ code: 'AS', suit: 'SPADES', value: 'ACE' }],
+        DECK,
       ]);
     });
   });

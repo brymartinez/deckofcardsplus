@@ -64,7 +64,7 @@ export class DeckService {
 
     await deck.save();
 
-    return [cards, deck];
+    return [cards, deck.toObject()];
   }
 
   public shuffle(cards: string[]): string[] {

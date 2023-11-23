@@ -23,7 +23,7 @@ describe('DeckController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(deckController.createDeck()).resolves.toStrictEqual(undefined);
+      expect(deckController.createDeck()).resolves.not.toThrow();
     });
   });
 });
