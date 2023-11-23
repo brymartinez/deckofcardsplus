@@ -26,7 +26,7 @@ export class DeckInterceptor<T> implements NestInterceptor<T, DeckDTO> {
       map((response: DeckDocument) => ({
         success: true,
         deckId: response._id.toString(),
-        shuffled: response.isShuffled,
+        isShuffled: response.isShuffled,
         remaining: response.remaining,
       })),
     );

@@ -6,9 +6,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
-import { CardDTO } from 'src/dto/card.dto';
+import { Card, CardDTO } from 'src/dto/card.dto';
 import { Deck } from 'src/entity/deck.entity';
-import { Card } from 'src/models/card';
 
 @Injectable()
 export class CardInterceptor<T> implements NestInterceptor<T, CardDTO> {

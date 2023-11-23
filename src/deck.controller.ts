@@ -6,11 +6,14 @@ import {
   Get,
   Param,
   UseInterceptors,
+  HttpCode,
 } from '@nestjs/common';
 import { DeckService } from './services/deck/deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 import { DeckInterceptor } from './interceptor/deck.interceptor';
 import { CardInterceptor } from './interceptor/card.interceptor';
+import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
+import { CardDTO } from './dto/card.dto';
 
 @Controller({ version: '1', path: 'deck' })
 export class DeckController {
@@ -29,7 +32,15 @@ export class DeckController {
     return this.deckService.get(deckId);
   }
 
+  @HttpCode(200)
   @Post(':deckId/draw/:count')
+  @ApiExtraModels(CardDTO)
+  @ApiResponse({
+    description: 'Deck details plus cards drawn.',
+    schema: {
+      $ref: getSchemaPath(CardDTO),
+    },
+  })
   @UseInterceptors(CardInterceptor)
   public async drawFromDeck(
     @Param('deckId') deckId: string,

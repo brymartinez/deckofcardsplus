@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { CreateDeckDTO } from '../../dto/create-deck.dto';
 import { Deck } from '../../entity/deck.entity';
 import { DeckSuit } from '../../enums/enums';
-import { Card } from 'src/models/card';
+import { Card } from 'src/dto/card.dto';
 
 const DECK_OF_CARDS = [
   { key: 'A', value: 'ACE' },

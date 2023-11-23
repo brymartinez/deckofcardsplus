@@ -30,7 +30,7 @@ describe('DeckInterceptor', () => {
     ).resolves.toEqual({
       deckId: '655cd0d1a9b29f3a3136177e',
       remaining: 52,
-      shuffled: true,
+      isShuffled: true,
       success: true,
     });
   });
