@@ -41,7 +41,9 @@ export class DeckService {
   }
 
   public async get(deckId: string) {
-    return this.deckModel.findById(deckId);
+    const deck = await this.deckModel.findById(deckId);
+    Logger.debug(deck);
+    return deck;
   }
 
   public async draw(deckId: string, count: number): Promise<[Card[], Deck]> {
@@ -77,6 +79,10 @@ export class DeckService {
     }
 
     return cards;
+  }
+
+  public async save(deck: Partial<Deck>) {
+    return this.deckModel.updateOne({ _id: deck.id }, deck);
   }
 
   private createCards(isShuffled: boolean): string[] {

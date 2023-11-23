@@ -23,12 +23,14 @@ export class DeckInterceptor<T> implements NestInterceptor<T, DeckDTO> {
     Logger.log(request.query, 'Query');
 
     return next.handle().pipe(
-      map((response: DeckDocument) => ({
-        success: true,
-        deckId: response._id.toString(),
-        isShuffled: response.isShuffled,
-        remaining: response.remaining,
-      })),
+      map((response: DeckDocument) => {
+        return {
+          success: true,
+          deckId: response._id.toString(),
+          isShuffled: response.isShuffled,
+          remaining: response.remaining,
+        };
+      }),
     );
   }
 }

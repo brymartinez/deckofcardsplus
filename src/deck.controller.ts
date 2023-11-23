@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
-  Logger,
   Post,
   Get,
   Param,
   UseInterceptors,
   HttpCode,
+  Put,
+  Query,
+  Logger,
 } from '@nestjs/common';
 import { DeckService } from './services/deck/deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
@@ -23,7 +25,6 @@ export class DeckController {
   @Post()
   @UseInterceptors(DeckInterceptor)
   public async createDeck(@Body() dto?: CreateDeckDTO) {
-    Logger.debug({ msg: 'DeckController', dto });
     return this.deckService.create(dto);
   }
 
@@ -57,5 +58,39 @@ export class DeckController {
     @Param('count') count: number,
   ) {
     return this.deckService.draw(deckId, count);
+  }
+
+  @Put(':deckId/shuffle')
+  @UseInterceptors(DeckInterceptor)
+  public async shuffle(
+    @Param('deckId') deckId: string,
+    @Query('remaining') shuffleRemaining: boolean = false,
+  ) {
+    const deck = await this.deckService.get(deckId);
+    Logger.debug(deck);
+    let remaining = deck.remaining;
+    let totalDeck = deck.drawPile;
+
+    if (shuffleRemaining) {
+      totalDeck = [...totalDeck, ...deck.drawnPile];
+
+      remaining = totalDeck.length;
+    }
+
+    totalDeck = [...this.deckService.shuffle(totalDeck)];
+
+    const result = await this.deckService.save({
+      id: deckId,
+      drawPile: totalDeck,
+      ...(shuffleRemaining && { drawnPile: [] }),
+      remaining,
+    });
+
+    Logger.debug(result);
+
+    return {
+      ...deck.toObject(),
+      remaining,
+    };
   }
 }
