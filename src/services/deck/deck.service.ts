@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { CreateDeckDTO } from '../../dto/create-deck.dto';
 import { Deck } from '../../entity/deck.entity';
 import { DeckSuit } from '../../enums/enums';
-import { CardDTO } from 'src/dto/card.dto';
+import { Card } from 'src/models/card';
 
 const DECK_OF_CARDS = [
   { key: 'A', value: 'ACE' },
@@ -44,9 +44,9 @@ export class DeckService {
     return this.deckModel.findById(deckId);
   }
 
-  public async draw(deckId: string, count: number) {
+  public async draw(deckId: string, count: number): Promise<[Card[], Deck]> {
     const deck = await this.get(deckId);
-    const cards: CardDTO[] = [];
+    const cards: Card[] = [];
     for (let i = 0; i < count; i++) {
       const topCard = deck.drawPile.shift();
 
@@ -64,7 +64,7 @@ export class DeckService {
 
     await deck.save();
 
-    return cards;
+    return [cards, deck];
   }
 
   public shuffle(cards: string[]): string[] {

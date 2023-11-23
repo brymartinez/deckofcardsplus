@@ -10,6 +10,7 @@ import {
 import { DeckService } from './services/deck/deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 import { DeckInterceptor } from './interceptor/deck.interceptor';
+import { CardInterceptor } from './interceptor/card.interceptor';
 
 @Controller({ version: '1', path: 'deck' })
 export class DeckController {
@@ -29,6 +30,7 @@ export class DeckController {
   }
 
   @Post(':deckId/draw/:count')
+  @UseInterceptors(CardInterceptor)
   public async drawFromDeck(
     @Param('deckId') deckId: string,
     @Param('count') count: number,

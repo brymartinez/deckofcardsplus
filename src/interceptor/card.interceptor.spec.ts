@@ -1,13 +1,15 @@
 import { first, lastValueFrom, of } from 'rxjs';
-import { DeckInterceptor } from './deck.interceptor';
-import { DECK } from 'src/constants/test-constants';
+import { CARDS, DECK } from 'src/constants/test-constants';
+import { CardInterceptor } from './card.interceptor';
 
 const CONTEXT: any = {
   switchToHttp: () => ({
     getRequest: () => ({
       headers: {},
       body: {},
-      params: {},
+      params: {
+        deckId: '655cd0d1a9b29f3a3136177e',
+      },
       query: {},
     }),
   }),
@@ -15,23 +17,23 @@ const CONTEXT: any = {
 
 const NEXT: any = {
   handle: () => {
-    return of(DECK);
+    return of([CARDS, DECK]);
   },
 };
 
-describe('DeckInterceptor', () => {
-  const interceptor = new DeckInterceptor();
+describe('CardInterceptor', () => {
+  const interceptor = new CardInterceptor();
   it('should be defined', () => {
     expect(interceptor).toBeDefined();
   });
-  it('should return deck DTO', async () => {
+  it('should return card DTO', async () => {
     await expect(
       lastValueFrom(interceptor.intercept(CONTEXT, NEXT).pipe(first())),
     ).resolves.toEqual({
-      deckId: '655cd0d1a9b29f3a3136177e',
-      remaining: 52,
-      shuffled: true,
       success: true,
+      deckId: '655cd0d1a9b29f3a3136177e',
+      cards: CARDS,
+      remaining: 52,
     });
   });
 });

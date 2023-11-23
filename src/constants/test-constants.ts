@@ -59,3 +59,11 @@ export const DECK: any = {
   _id: '655cd0d1a9b29f3a3136177e',
   __v: 0,
 };
+
+export const CARDS: any[] = [
+  {
+    code: '2H',
+    value: '2',
+    suit: 'HEARTS',
+  },
+];

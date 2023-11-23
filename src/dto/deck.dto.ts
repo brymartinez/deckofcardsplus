@@ -1,6 +1,5 @@
-export class DeckDTO {
-  success: boolean;
-  deckId: string;
+import { DeckMetadata } from 'src/models/deck.metadata';
+
+export class DeckDTO extends DeckMetadata {
   shuffled: boolean;
-  remaining: number;
 }
