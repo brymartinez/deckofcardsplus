@@ -18,6 +18,7 @@ describe('DeckService', () => {
           useValue: {
             create: jest.fn().mockResolvedValue(DECK),
             findById: jest.fn().mockResolvedValue(DECK),
+            updateOne: jest.fn(),
           },
         },
       ],
@@ -63,6 +64,15 @@ describe('DeckService', () => {
         [{ code: 'AS', suit: 'SPADES', value: 'ACE' }],
         DECK,
       ]);
+    });
+  });
+  describe('save', () => {
+    it('should save deck', () => {
+      expect(
+        service.save({
+          id: 'deckId',
+        }),
+      ).resolves.not.toThrow();
     });
   });
 });
