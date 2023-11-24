@@ -1,0 +1,171 @@
+openapi: 3.1.0
+paths:
+  /v1/deck:
+    post:
+      operationId: DeckController_createDeck
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDeckDTO'
+      responses:
+        '201':
+          description: Deck details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeckDTO'
+  /v1/deck/{deckId}:
+    get:
+      operationId: DeckController_getDeck
+      parameters:
+        - name: deckId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deck details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeckDTO'
+  /v1/deck/{deckId}/draw/{count}:
+    post:
+      operationId: DeckController_drawFromDeck
+      parameters:
+        - name: deckId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: count
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Deck details plus cards drawn
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardDTO'
+  /v1/deck/{deckId}/shuffle:
+    put:
+      operationId: DeckController_shuffleDeck
+      parameters:
+        - name: deckId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: remaining
+          required: false
+          in: query
+          description: Determine if the remaining (drawn) cards will be shuffled with the rest of the deck.
+          example: true
+          schema:
+            default: false
+            type: boolean
+      responses:
+        '200':
+          description: Deck details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeckDTO'
+info:
+  title: Deck of Cards Plus
+  description: Deck of Cards NestJS API implementation
+  version: '1.0'
+  contact: {}
+components:
+  schemas:
+    DeckDTO:
+      type: object
+      properties:
+        isShuffled:
+          type: boolean
+          description: Determine if the requested deck is shuffled.
+          example: true
+        success:
+          type: boolean
+          example: true
+        deckId:
+          type: string
+          description: Alphanumeric deck id.
+          example: 655eff90af0b9322c12aa6f3
+        remaining:
+          type: number
+          description: Remaining number of cards in the draw pile.
+          example: 52
+      required:
+        - isShuffled
+        - success
+        - deckId
+        - remaining
+    CreateDeckDTO:
+      type: object
+      properties:
+        isShuffled:
+          type: boolean
+          description: |-
+            Determine if the deck is shuffled on creation.
+            Otherwise, will follow the order: SPADES, DIAMONDS, CLUBS, HEARTS
+          example: true
+          default: true
+        cards:
+          description: Partial deck. Passing an empty array creates a full deck.
+          example:
+            - AS
+            - AD
+            - AC
+            - AH
+          type: array
+          items:
+            type: string
+    Card:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Value + Suit of the card.
+          example: AS
+        value:
+          type: string
+          description: Value of the card.
+          example: ACE
+        suit:
+          type: string
+          description: Suit of the card.
+          example: SPADES
+      required:
+        - code
+        - value
+        - suit
+    CardDTO:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        success:
+          type: boolean
+          example: true
+        deckId:
+          type: string
+          description: Alphanumeric deck id.
+          example: 655eff90af0b9322c12aa6f3
+        remaining:
+          type: number
+          description: Remaining number of cards in the draw pile.
+          example: 52
+      required:
+        - cards
+        - success
+        - deckId
+        - remaining
