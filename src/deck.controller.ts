@@ -14,9 +14,6 @@ import { DeckService } from './services/deck/deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 import { DeckInterceptor } from './interceptor/deck.interceptor';
 import { CardInterceptor } from './interceptor/card.interceptor';
-import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
-import { CardDTO } from './dto/card.dto';
-import { DeckDTO } from './dto/deck.dto';
 import { ShuffleDeckQueryDTO } from './dto/shuffle-deck-query.dto';
 
 @Controller({ version: '1', path: 'deck' })
@@ -25,42 +22,18 @@ export class DeckController {
 
   @Post()
   @UseInterceptors(DeckInterceptor)
-  @ApiExtraModels(DeckDTO)
-  @ApiResponse({
-    description: 'Deck details',
-    status: 201,
-    schema: {
-      $ref: getSchemaPath(DeckDTO),
-    },
-  })
   public async createDeck(@Body() dto?: CreateDeckDTO) {
     return this.deckService.create(dto);
   }
 
   @Get(':deckId')
   @UseInterceptors(DeckInterceptor)
-  @ApiExtraModels(DeckDTO)
-  @ApiResponse({
-    description: 'Deck details',
-    status: 200,
-    schema: {
-      $ref: getSchemaPath(DeckDTO),
-    },
-  })
   public async getDeck(@Param('deckId') deckId: string) {
     return this.deckService.get(deckId);
   }
 
   @HttpCode(200)
   @Post(':deckId/draw/:count')
-  @ApiExtraModels(CardDTO)
-  @ApiResponse({
-    description: 'Deck details plus cards drawn',
-    status: 200,
-    schema: {
-      $ref: getSchemaPath(CardDTO),
-    },
-  })
   @UseInterceptors(CardInterceptor)
   public async drawFromDeck(
     @Param('deckId') deckId: string,
@@ -71,14 +44,6 @@ export class DeckController {
 
   @Put(':deckId/shuffle')
   @UseInterceptors(DeckInterceptor)
-  @ApiExtraModels(DeckDTO)
-  @ApiResponse({
-    description: 'Deck details',
-    status: 200,
-    schema: {
-      $ref: getSchemaPath(DeckDTO),
-    },
-  })
   public async shuffleDeck(
     @Param('deckId') deckId: string,
     @Query() params?: ShuffleDeckQueryDTO,
