@@ -13,7 +13,7 @@ export class Deck {
   id: string;
   /**
    * Cards that are already drawn from the deck.
-   * @example "['AS','2S']"
+   * @example ['AS', 'AD', 'AC', 'AH']
    */
   @Prop([String])
   drawnPile: string[];

@@ -13,7 +13,7 @@ export class CreateDeckDTO {
   @ApiPropertyOptional()
   isShuffled?: boolean = true;
   /**
-   * Determine if the deck is shuffled on creation.
+   * Partial deck. Passing an empty array creates a full deck.
    * @example ['AS', 'AD', 'AC', 'AH']
    */
   @IsOptional()

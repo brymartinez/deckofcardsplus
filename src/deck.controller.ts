@@ -25,6 +25,14 @@ export class DeckController {
 
   @Post()
   @UseInterceptors(DeckInterceptor)
+  @ApiExtraModels(DeckDTO)
+  @ApiResponse({
+    description: 'Deck details',
+    status: 201,
+    schema: {
+      $ref: getSchemaPath(DeckDTO),
+    },
+  })
   public async createDeck(@Body() dto?: CreateDeckDTO) {
     return this.deckService.create(dto);
   }
