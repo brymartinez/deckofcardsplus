@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DeckController } from './deck.controller';
 import { DeckService } from './services/deck/deck.service';
 import { DECK } from './constants/test-constants';
+import { getModelToken } from '@nestjs/mongoose';
 
 describe('DeckController', () => {
   let deckController: DeckController;
@@ -20,6 +21,16 @@ describe('DeckController', () => {
             shuffle: jest.fn().mockReturnValue(DECK.drawPile),
           },
         },
+        {
+          provide: getModelToken('Deck'),
+          useValue: {
+            create: jest.fn().mockResolvedValue(DECK),
+            findById: jest.fn().mockImplementation(() => ({
+              lean: jest.fn().mockResolvedValue(DECK),
+            })),
+            updateOne: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -34,7 +45,7 @@ describe('DeckController', () => {
   });
   describe('get', () => {
     it('should get', () => {
-      expect(deckController.getDeck('deckId')).resolves.not.toThrow();
+      expect(deckController.getDeck(DECK)).resolves.not.toThrow();
     });
   });
   describe('draw', () => {

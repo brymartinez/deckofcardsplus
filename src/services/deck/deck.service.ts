@@ -6,6 +6,7 @@ import { Deck } from '../../entity/deck.entity';
 import { DeckSuit } from '../../enums/enums';
 import { Card } from 'src/dto/card.dto';
 import { DECK_OF_CARDS } from 'src/constants/constants';
+import { NotEnoughCardsException } from 'src/exceptions/not-enough-cards.exception';
 
 @Injectable()
 export class DeckService {
@@ -33,6 +34,11 @@ export class DeckService {
   public async draw(deckId: string, count: number): Promise<[Card[], Deck]> {
     const deck = await this.deckModel.findById(deckId);
     const cards: Card[] = [];
+
+    if (deck.drawPile.length < count) {
+      throw new NotEnoughCardsException(count, deck.drawPile.length);
+    }
+
     for (let i = 0; i < count; i++) {
       const topCard = deck.drawPile.shift();
 

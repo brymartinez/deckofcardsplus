@@ -4,6 +4,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Deck } from '../../entity/deck.entity';
 import { Model } from 'mongoose';
 import { DECK } from 'src/constants/test-constants';
+import { NotEnoughCardsException } from 'src/exceptions/not-enough-cards.exception';
 
 describe('DeckService', () => {
   let service: DeckService;
@@ -86,6 +87,18 @@ describe('DeckService', () => {
         [{ code: 'AS', suit: 'SPADES', value: 'ACE' }],
         DECK,
       ]);
+    });
+    it('should throw when not enough cards', () => {
+      jest.spyOn(deckModel, 'findById').mockResolvedValue({
+        ...DECK,
+        drawPile: ['AS'],
+        remaining: 1,
+        save: jest.fn(),
+        toObject: jest.fn().mockReturnValue(DECK),
+      });
+      expect(service.draw('deckId', 2)).rejects.toThrow(
+        NotEnoughCardsException,
+      );
     });
   });
   describe('save', () => {
