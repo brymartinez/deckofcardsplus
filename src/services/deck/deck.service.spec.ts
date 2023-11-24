@@ -47,7 +47,27 @@ describe('DeckService', () => {
       });
     });
     it('should create cards, shuffled', () => {
-      expect(service.create({ isShuffled: true })).resolves.toStrictEqual(DECK);
+      expect(
+        service.create({ isShuffled: true, cards: [] }),
+      ).resolves.toStrictEqual(DECK);
+    });
+    it('should create cards, partial deck', () => {
+      const expected = {
+        ...DECK,
+        isShuffled: false,
+        drawPile: ['AS', 'AH'],
+        remaining: 2,
+      };
+      jest.spyOn(deckModel, 'create').mockResolvedValue(expected);
+      expect(service.create({ cards: ['AS', 'AH'] })).resolves.toStrictEqual(
+        expected,
+      );
+      expect(deckModel.create).toHaveBeenCalledWith({
+        drawPile: ['AS', 'AH'],
+        drawnPile: [],
+        isShuffled: false,
+        remaining: 2,
+      });
     });
   });
   describe('get', () => {

@@ -17,7 +17,7 @@ export class DeckService {
     const createdDeck = await this.deckModel.create({
       drawPile,
       drawnPile: [],
-      isShuffled: dto.isShuffled,
+      isShuffled: dto.isShuffled === true,
       remaining: drawPile.length,
     });
 
