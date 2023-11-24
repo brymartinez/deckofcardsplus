@@ -17,6 +17,7 @@ import { CardInterceptor } from './interceptor/card.interceptor';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { CardDTO } from './dto/card.dto';
 import { DeckDTO } from './dto/deck.dto';
+import { ShuffleDeckQueryDTO } from './dto/shuffle-deck-query.dto';
 
 @Controller({ version: '1', path: 'deck' })
 export class DeckController {
@@ -62,11 +63,20 @@ export class DeckController {
 
   @Put(':deckId/shuffle')
   @UseInterceptors(DeckInterceptor)
+  @ApiExtraModels(DeckDTO)
+  @ApiResponse({
+    description: 'Deck details',
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(DeckDTO),
+    },
+  })
   public async shuffle(
     @Param('deckId') deckId: string,
-    @Query('remaining') shuffleRemaining: boolean = false,
+    @Query() params: ShuffleDeckQueryDTO,
   ) {
     const deck = await this.deckService.get(deckId);
+    const shuffleRemaining = params?.remaining;
     Logger.debug(deck);
     let remaining = deck.remaining;
     let totalDeck = deck.drawPile;
