@@ -8,7 +8,7 @@ import {
   HttpCode,
   Put,
   Query,
-  Logger,
+  // Logger,
 } from '@nestjs/common';
 import { DeckService } from './services/deck/deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
@@ -71,13 +71,12 @@ export class DeckController {
       $ref: getSchemaPath(DeckDTO),
     },
   })
-  public async shuffle(
+  public async shuffleDeck(
     @Param('deckId') deckId: string,
-    @Query() params: ShuffleDeckQueryDTO,
+    @Query() params?: ShuffleDeckQueryDTO,
   ) {
     const deck = await this.deckService.get(deckId);
     const shuffleRemaining = params?.remaining;
-    Logger.debug(deck);
     let remaining = deck.remaining;
     let totalDeck = deck.drawPile;
 
@@ -89,17 +88,15 @@ export class DeckController {
 
     totalDeck = [...this.deckService.shuffle(totalDeck)];
 
-    const result = await this.deckService.save({
+    await this.deckService.save({
       id: deckId,
       drawPile: totalDeck,
       ...(shuffleRemaining && { drawnPile: [] }),
       remaining,
     });
 
-    Logger.debug(result);
-
     return {
-      ...deck.toObject(),
+      ...deck,
       remaining,
     };
   }

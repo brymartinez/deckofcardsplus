@@ -17,7 +17,9 @@ describe('DeckService', () => {
           provide: getModelToken('Deck'),
           useValue: {
             create: jest.fn().mockResolvedValue(DECK),
-            findById: jest.fn().mockResolvedValue(DECK),
+            findById: jest.fn().mockImplementation(() => ({
+              lean: jest.fn().mockResolvedValue(DECK),
+            })),
             updateOne: jest.fn(),
           },
         },

@@ -24,6 +24,8 @@ export class DeckInterceptor<T> implements NestInterceptor<T, DeckDTO> {
 
     return next.handle().pipe(
       map((response: DeckDocument) => {
+        Logger.debug({ msg: 'DeckInterceptor', response });
+
         return {
           success: true,
           deckId: response._id.toString(),

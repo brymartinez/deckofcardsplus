@@ -41,13 +41,13 @@ export class DeckService {
   }
 
   public async get(deckId: string) {
-    const deck = await this.deckModel.findById(deckId);
-    Logger.debug(deck);
+    const deck = await this.deckModel.findById(deckId).lean();
+    Logger.debug({ msg: 'DeckService', deck });
     return deck;
   }
 
   public async draw(deckId: string, count: number): Promise<[Card[], Deck]> {
-    const deck = await this.get(deckId);
+    const deck = await this.deckModel.findById(deckId);
     const cards: Card[] = [];
     for (let i = 0; i < count; i++) {
       const topCard = deck.drawPile.shift();

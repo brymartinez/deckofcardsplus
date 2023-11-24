@@ -9,6 +9,7 @@ Deck of cards NestJS implementation, inspired by the [Deck of Cards API](https:/
 ## TODO
  - Partial Deck
  - Pile Management
+ - Errors
 
 ## Installation
 
