@@ -34,18 +34,4 @@ describe('DeckInterceptor', () => {
       success: true,
     });
   });
-  //   it('should return if deck is not a DeckDocument', async () => {
-  //     await expect(
-  //       lastValueFrom(interceptor.intercept(CONTEXT, {
-  //   handle: () => {
-  //     return of(DECK);
-  //   },
-  // }).pipe(first())),
-  //     ).resolves.toEqual({
-  //       deckId: '655cd0d1a9b29f3a3136177e',
-  //       remaining: 52,
-  //       isShuffled: true,
-  //       success: true,
-  //     });
-  //   });
 });
