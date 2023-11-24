@@ -2,10 +2,10 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { APIError } from './api-error';
 
 export class DeckNotFoundException extends HttpException {
-  constructor(message: string) {
+  constructor() {
     const error: APIError = {
       code: '1001',
-      message,
+      message: 'Deck not found',
     };
     super(error, HttpStatus.BAD_REQUEST);
   }

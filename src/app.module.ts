@@ -3,6 +3,7 @@ import { DeckController } from './deck.controller';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DeckModule } from './services/deck/deck.module';
+import { Deck, DeckSchema } from './entity/deck.entity';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DeckModule } from './services/deck/deck.module';
         password: process.env.DATABASE_PASS,
       },
     }),
+    MongooseModule.forFeature([{ name: Deck.name, schema: DeckSchema }]),
     DeckModule,
   ],
   controllers: [DeckController],

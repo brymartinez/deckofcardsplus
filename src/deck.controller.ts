@@ -15,6 +15,8 @@ import { CreateDeckDTO } from './dto/create-deck.dto';
 import { DeckInterceptor } from './interceptor/deck.interceptor';
 import { CardInterceptor } from './interceptor/card.interceptor';
 import { ShuffleDeckQueryDTO } from './dto/shuffle-deck-query.dto';
+import { DeckPipe } from './pipes/deck/deck.pipe';
+import { Deck } from './entity/deck.entity';
 
 @Controller({ version: '1', path: 'deck' })
 export class DeckController {
@@ -26,26 +28,26 @@ export class DeckController {
     return this.deckService.create(dto);
   }
 
-  @Get(':deckId')
+  @Get(':id')
   @UseInterceptors(DeckInterceptor)
-  public async getDeck(@Param('deckId') deckId: string) {
-    return this.deckService.get(deckId);
+  public async getDeck(@Param('id', DeckPipe) deck: Deck) {
+    return deck;
   }
 
   @HttpCode(200)
-  @Post(':deckId/draw/:count')
+  @Post(':id/draw/:count')
   @UseInterceptors(CardInterceptor)
   public async drawFromDeck(
-    @Param('deckId') deckId: string,
+    @Param('id', DeckPipe) deckId: string,
     @Param('count') count: number,
   ) {
     return this.deckService.draw(deckId, count);
   }
 
-  @Put(':deckId/shuffle')
+  @Put(':id/shuffle')
   @UseInterceptors(DeckInterceptor)
   public async shuffleDeck(
-    @Param('deckId') deckId: string,
+    @Param('id', DeckPipe) deckId: string,
     @Query() params?: ShuffleDeckQueryDTO,
   ) {
     const deck = await this.deckService.get(deckId);
